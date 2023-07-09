@@ -22,6 +22,8 @@
  * create pause(), call clearInterval() and assign pauseButton to event listener.
  *  Attach "this" to the method or variable that you want to call in another method in the same class.
  * 
+ * Vid 12
+ * 
  * 
  */
 
@@ -43,7 +45,9 @@ class Timer {
     };
 
     tick = () => {
-        console.log("tick..")
+        const timeRemaining = parseFloat(durationInput.value);
+        durationInput.value = timeRemaining -1;
+        
     }
 
     pause = () => {
