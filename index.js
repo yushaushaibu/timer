@@ -34,7 +34,6 @@ class Timer {
     };
 
     tick = () => {
-        this.timeRemaining = this.timeRemaining;
         this.timeRemaining = this.timeRemaining -1;
     };
 
