@@ -15,6 +15,7 @@
  * add value to input element in HTML
  * countdown value in tick()
  * create get and set function and invoke them in tick()
+ * implement a method for timer to stop at 0
  */
 
 class Timer {
@@ -34,7 +35,11 @@ class Timer {
     };
 
     tick = () => {
-        this.timeRemaining = this.timeRemaining -1;
+        if (this.timeRemaining <= 0) {
+            this.pause();
+        } else {
+            this.timeRemaining = this.timeRemaining - 1;
+        }
     };
 
     get timeRemaining() {
@@ -44,8 +49,6 @@ class Timer {
     set timeRemaining(time) {
         return this.durationInput.value = time;
     }
-
-
 
     pause = () => {
         clearInterval(this.intervalId);
