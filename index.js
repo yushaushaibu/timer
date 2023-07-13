@@ -16,25 +16,41 @@
  * countdown value in tick()
  * create get and set function and invoke them in tick()
  * implement a method for timer to stop at 0
+ * add callbacks to Timer for giving out information
  */
 
+
 class Timer {
-    constructor(durationInput, startButton, pauseButton) {
+    constructor(durationInput, startButton, pauseButton, callback) {
         this.durationInput = durationInput;
         this.startButton = startButton;
         this.pauseButton = pauseButton;
 
+        if (callback) {
+            this.onStart = callback.onStart;
+            this.onTick = callback.onTick;
+            this.onComplete = callback.onComplete;
+        }
+
         this.startButton.addEventListener("click", this.start);
 
-        this.pauseButton.addEventListener("click", this.pause)
+        this.pauseButton.addEventListener("click", this.pause);
     };
 
     start = () => {
+        if (this.onStart) {
+            this.onStart();
+        };
+
         this.tick();
         this.intervalId = setInterval(this.tick, 1000);
     };
 
     tick = () => {
+        if (this.onTick) {
+            this.onTick();
+        }
+
         if (this.timeRemaining <= 0) {
             this.pause();
         } else {
@@ -51,14 +67,27 @@ class Timer {
     }
 
     pause = () => {
+        if (this.onComplete) {
+            this.onComplete();
+        }
         clearInterval(this.intervalId);
-        console.log("Timer is paused!")
     }
-
 };
 
-const durationInput = document.querySelector("#duration");
-const startButton = document.querySelector("#start");
-const pauseButton = document.querySelector("#pause");
+const durationInput = document.getElementById("duration");
+const startButton = document.getElementById("start");
+const pauseButton = document.getElementById("pause");
 
-const timer = new Timer(durationInput, startButton, pauseButton);
+const timer = new Timer(durationInput, startButton, pauseButton, {
+    onStart() {
+        console.log("Timer started")
+    },
+
+    onTick() {
+        console.log("Ticking..")
+    },
+
+    onComplete() {
+        console.log("Timer complete")
+    }
+});
