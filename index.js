@@ -17,19 +17,20 @@
  * create get and set function and invoke them in tick()
  * implement a method for timer to stop at 0
  * add callbacks to Timer for giving out information
+ * Extract class Timer codes into timer.js
  */
 
 
 class Timer {
-    constructor(durationInput, startButton, pauseButton, callback) {
+    constructor(durationInput, startButton, pauseButton, callbacks) {
         this.durationInput = durationInput;
         this.startButton = startButton;
         this.pauseButton = pauseButton;
 
-        if (callback) {
-            this.onStart = callback.onStart;
-            this.onTick = callback.onTick;
-            this.onComplete = callback.onComplete;
+        if (callbacks) {
+            this.onStart = callbacks.onStart;
+            this.onTick = callbacks.onTick;
+            this.onComplete = callbacks.onComplete;
         }
 
         this.startButton.addEventListener("click", this.start);
@@ -47,14 +48,17 @@ class Timer {
     };
 
     tick = () => {
-        if (this.onTick) {
-            this.onTick();
-        }
 
         if (this.timeRemaining <= 0) {
             this.pause();
+            if (this.onComplete) {
+                this.onComplete();
+            }
         } else {
             this.timeRemaining = this.timeRemaining - 1;
+            if (this.onTick) {
+                this.onTick();
+            }
         }
     };
 
@@ -67,9 +71,6 @@ class Timer {
     }
 
     pause = () => {
-        if (this.onComplete) {
-            this.onComplete();
-        }
         clearInterval(this.intervalId);
     }
 };
